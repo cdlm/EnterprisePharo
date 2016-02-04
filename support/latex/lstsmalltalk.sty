@@ -1,15 +1,42 @@
 \ProvidesFile{lstsmalltalk.sty}
     [2009/07/03 0.2 listings Smalltalk definitions file]
 %
-\RequirePackage{listings}%
+\RequirePackage{listings}
+\RequirePackage{relsize}
+\RequirePackage{calc}
 
-\lstdefinelanguage{Smalltalk}{
+\newcommand\language@smalltalk{smalltalk}
+
+% all this needed to incept the above macro as the name of the language
+% definition
+\expandafter\expandafter\expandafter\lstdefinelanguage
+\expandafter{\language@smalltalk}
+{
   keywords={self,super,true,false,nil,thisContext},
   otherkeywords={^,:=,->,==,~=},
   alsoletter={\#:},
   string=[d]',
   comment=[s]{"}{"},
-}[keywords,comments,strings]%
+  literate={\ >>\ }{{\smalltalk@chevron}}3,
+}[keywords,comments,strings]
+
+\newif\ifsmalltalk@methodpattern
+\smalltalk@methodpatterntrue
+
+\lst@AddToHook{EndGroup}{% first line is class >> selector
+    \global\smalltalk@methodpatterntrue}
+\lst@AddToHook{EOL}{% switch >> back to operator appearance
+    \global\smalltalk@methodpatternfalse}
+
+\newcommand\smalltalk@methodpattern@chevron{\makebox[\widthof{>>>}][c]{\textsmaller{>>}}}
+\newcommand\smalltalk@operator@chevron{>>}
+\newcommand\smalltalk@chevron{%
+  \ifsmalltalk@methodpattern
+    \smalltalk@methodpattern@chevron
+  \else
+    \smalltalk@operator@chevron
+  \fi}
+
 \endinput
 %%%
 %%% And now for something completely different... Some stupid example,

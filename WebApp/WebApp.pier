@@ -47,8 +47,8 @@ Any object can be a Web app, it only has to respond to the
 ==handleRequest:== message to answer a response based on a request. Now add the following method:
 
 [[[language=smalltalk
-MyFirstWebApp>>handleRequest: request
-    request uri path = #image
+MyFirstWebApp >> handleRequest: request
+    request uri >> path = #image
         ifFalse: [ ^ ZnResponse notFound: request uri ].
     ^ ZnResponse ok: (ZnEntity text: 'Hello World!')
 ]]]
